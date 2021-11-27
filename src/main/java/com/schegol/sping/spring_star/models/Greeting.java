@@ -1,4 +1,4 @@
-package com.schegol.sping.spring_star;
+package com.schegol.sping.spring_star.models;
 
 public class Greeting {
     private final long id;

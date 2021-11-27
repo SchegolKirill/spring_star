@@ -1,4 +1,4 @@
-package com.schegol.sping.spring_star;
+package com.schegol.sping.spring_star.controllers;
 
 
 import org.springframework.web.bind.annotation.GetMapping;

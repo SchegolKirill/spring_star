@@ -1,13 +1,17 @@
 package com.schegol.sping.spring_star.controllers;
 
-import com.schegol.sping.spring_star.repositories.PersonRepository;
+import com.schegol.sping.spring_star.converters.PersonConverter;
+import com.schegol.sping.spring_star.dto.PersonDTO;
+import com.schegol.sping.spring_star.exception_handling.ExceptionVariant;
+import com.schegol.sping.spring_star.exception_handling.PersonException;
+import com.schegol.sping.spring_star.exception_handling.PersonIncorrectData;
 import com.schegol.sping.spring_star.models.Person;
 import com.schegol.sping.spring_star.services.PersonService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -16,9 +20,13 @@ import java.util.List;
 public class PersonController {
 
     private final PersonService personService;
+    private final PersonConverter personConverter;
 
     @GetMapping("/{name}")
     public Person getPerson(@PathVariable String name){
+        if(personService.getPerson(name) == null){
+            throw new PersonException(ExceptionVariant.NOT_FOUND.getAdvice());
+        }
         return personService.getPerson(name);
     }
 
@@ -57,5 +65,10 @@ public class PersonController {
     @PostMapping("/add")
     public String addNewPerson(@RequestBody Person person){
         return personService.addPerson(person);
+    }
+
+    @GetMapping("/over30")
+    public List<PersonDTO> getPersonOver30(){
+        return personConverter.entityToDTO(personService.getPersonOver30());
     }
 }

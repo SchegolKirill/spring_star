@@ -3,6 +3,9 @@ package com.schegol.sping.spring_star.services;
 import com.schegol.sping.spring_star.models.Person;
 import com.schegol.sping.spring_star.repositories.PersonRepository;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.TypeCache;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,7 +44,7 @@ public class PersonServiceImpl implements PersonService{
     public List<Person> getPersonSameAge(Integer age){
         List<Person> personList = new ArrayList<>();
         for(Person person : personRepository.findAll()){
-            if(person.getAge()==age){
+            if(person.getAge().equals(age)){
                 personList.add(person);
             }
         }
@@ -54,4 +57,8 @@ public class PersonServiceImpl implements PersonService{
         return "Новый Person успешно добавлен." ;
     }
 
+    @Override
+    public List<Person> getPersonOver30() {
+        return personRepository.findByAgeGreaterThan30();
+    }
 }

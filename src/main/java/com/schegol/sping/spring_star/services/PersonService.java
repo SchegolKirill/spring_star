@@ -1,5 +1,6 @@
 package com.schegol.sping.spring_star.services;
 
+import com.schegol.sping.spring_star.dto.PersonDTO;
 import com.schegol.sping.spring_star.models.Person;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface PersonService {
     List<Person> getPersonSameAge(Integer age);
 
     String addPerson(Person person);
+
+    List<Person> getPersonOver30();
 }

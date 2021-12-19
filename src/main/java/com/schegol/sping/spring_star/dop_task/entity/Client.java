@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "clients")
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor()
 public class Client {
 
     @Id
@@ -37,6 +37,14 @@ public class Client {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
     private List<Order> orders;
+
+    public Client(String name, String inn, String phoneNumber, Address address, List<Order> orders){
+        this.name = name;
+        this.inn = inn;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.orders = orders;
+    }
 
     public void addOrderToClient(Order order){
         if(orders == null){

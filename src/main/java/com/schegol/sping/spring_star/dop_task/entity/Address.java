@@ -40,4 +40,15 @@ public class Address {
 
     @Column(name = "office")
     private Integer office;
+
+    public Address(String codeOfRegion, String nameOfDistrict, String nameOfCity,
+                   String street, Integer house, Integer caseNumber, Integer office) {
+        this.codeOfRegion = codeOfRegion;
+        this.nameOfDistrict = nameOfDistrict;
+        this.nameOfCity = nameOfCity;
+        this.street = street;
+        this.house = house;
+        this.caseNumber = caseNumber;
+        this.office = office;
+    }
 }

@@ -36,4 +36,11 @@ public class Order {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "client_id")
     private Client client;
+
+    public Order(Integer number, LocalDate dateOfCreation, String description, Long sum) {
+        this.number = number;
+        this.dateOfCreation = dateOfCreation;
+        this.description = description;
+        this.sum = sum;
+    }
 }

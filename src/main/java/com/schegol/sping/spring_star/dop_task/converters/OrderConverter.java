@@ -24,4 +24,19 @@ public class OrderConverter {
     public List<OrderDTO> entityToDTO(List<Order> orders){
         return orders.stream().map(x -> entityToDTO(x)).collect(Collectors.toList());
     }
+
+    public Order DTOToEntity(OrderDTO dto){
+
+        Order order = new Order();
+        order.setNumber(dto.getNumber());
+        order.setDescription(dto.getDescription());
+        order.setDateOfCreation(dto.getDateOfCreation());
+        order.setSum(dto.getSum());
+
+        return order;
+    }
+
+    public List<Order> DTOToEntity(List<OrderDTO> dto){
+        return dto.stream().map(x -> DTOToEntity(x)).collect(Collectors.toList());
+    }
 }

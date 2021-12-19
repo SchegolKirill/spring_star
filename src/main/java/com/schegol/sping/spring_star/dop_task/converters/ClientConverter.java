@@ -32,4 +32,18 @@ public class ClientConverter {
     public List<ClientDTO> entityToDTO(List<Client> clients){
         return clients.stream().map(x -> entityToDTO(x)).collect(Collectors.toList());
     }
+
+    public Client DTOToEntity(ClientDTO dto){
+        Client client = new Client();
+        client.setName(dto.getName());
+        client.setInn(dto.getInn());
+        client.setPhoneNumber(dto.getPhoneNumber());
+        client.setAddress(addressConverter.DTOToEntity(dto.getAddressDTO()));
+        client.setOrders(orderConverter.DTOToEntity(dto.getOrdersDTO()));
+        return client;
+    }
+
+    public List<Client> DTOToEntity(List<ClientDTO> dto){
+        return dto.stream().map(x -> DTOToEntity(x)).collect(Collectors.toList());
+    }
 }

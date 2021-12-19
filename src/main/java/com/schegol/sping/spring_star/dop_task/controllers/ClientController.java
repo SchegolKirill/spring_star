@@ -5,6 +5,7 @@ import com.schegol.sping.spring_star.dop_task.dto.ClientDTO;
 import com.schegol.sping.spring_star.dop_task.entity.Client;
 import com.schegol.sping.spring_star.dop_task.services.ClientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,13 +26,14 @@ public class ClientController {
     }
 
     @GetMapping("/getclient/{id}")
+    @Transactional
     public ClientDTO getClient(@PathVariable("id") Integer id){
         return clientConverter.entityToDTO(clientService.getClient(id));
     }
 
     @PutMapping("/update/{id}")
-    public String updateClient(@PathVariable("id") Integer id, @RequestBody Client client){
-        clientService.updateClient(id, client);
+    public String updateClient(@PathVariable("id") Integer id, @RequestBody ClientDTO dto){
+        clientService.updateClient(id, clientConverter.DTOToEntity(dto));
         return "Клиент " + id + " успешно обновлен";
     }
 

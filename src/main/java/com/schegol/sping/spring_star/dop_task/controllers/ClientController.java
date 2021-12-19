@@ -31,10 +31,16 @@ public class ClientController {
         return clientConverter.entityToDTO(clientService.getClient(id));
     }
 
+//    @PutMapping("/update/{id}")
+//    public String updateClient(@PathVariable("id") Integer id, @RequestBody ClientDTO dto){
+//        clientService.updateClient(id, clientConverter.DTOToEntity(dto));
+//        return "Клиент " + id + " успешно обновлен";
+//    }
+
     @PutMapping("/update/{id}")
-    public String updateClient(@PathVariable("id") Integer id, @RequestBody ClientDTO dto){
+    public ClientDTO updateClient(@PathVariable("id") Integer id, @RequestBody ClientDTO dto){
         clientService.updateClient(id, clientConverter.DTOToEntity(dto));
-        return "Клиент " + id + " успешно обновлен";
+        return clientConverter.entityToDTO(clientService.getClient(id));
     }
 
     @GetMapping("/getclients")

@@ -64,60 +64,105 @@ class ClientControllerTest {
 
     @Test
     void getClient() throws Exception{
-//        String stringId = "id";
-//        String url = "/client/getclient/"+stringId;
-//        Integer id = Integer.parseInt(stringId);
-        mockMvc.perform(get("/client/getclient/2"))
+
+            Address testAddress1 = new Address("2", "3", "4",
+                    "5", 7, 8, 9);
+            Order order1 = new Order(null, null, null, null);
+            List<Order> orders1 = new ArrayList<>();
+            orders1.add(order1);
+
+            Client testClient1 = new Client("Stan", "1231231",
+                    "123123123", testAddress1, orders1);
+        Client savedClient1 = clientRepository.save(testClient1);
+        mockMvc.perform(get("/client/getclient/" + savedClient1.getId()))
                 .andExpect(status().isOk())
-                .andExpect(clientCheck("$", clientController.getClient(2)));
+                .andExpect(clientCheck("$", clientController.getClient(savedClient1.getId())));
     }
 
     @Test
     void updateClient() throws Exception {
         Address testAddress1 = new Address("2", "3", "4",
                 "5", 7, 8, 9);
+        Order order1 = new Order(null, null, null, null);
+        List<Order> orders1 = new ArrayList<>();
+        orders1.add(order1);
 
         Client testClient1 = new Client("Stan", "1231231",
-                "123123123", testAddress1, null);
+                "123123123", testAddress1, orders1);
 
         Client savedClient = clientRepository.save(testClient1);
 
         Address testAddress2 = new Address("12", "13", "14",
                 "15", 17, 18, 19);
-//        Order order = new Order(1, LocalDate.now(), "burger", 100L);
-//        List<Order> orders = new ArrayList<>();
-//        orders.add(order);
+        Order order2 = new Order(1, null, "burger", 100L);
+        List<Order> orders2 = new ArrayList<>();
+        orders2.add(order2);
         Client testClient2 = new Client( "Alla", "1111",
-                "2222", testAddress2, null);
-        //ClientDTO testDTO2 = clientConverter.entityToDTO(testClient2);
+                "2222", testAddress2, orders2);
+        ClientDTO testDTO2 = clientConverter.entityToDTO(testClient2);
 
-        mockMvc.perform(putJson("/client/update/" + savedClient.getId(), testClient2))
-                .andExpect(status().isOk());
-                //.andExpect(clientCheck("$",testDTO2));
+        mockMvc.perform(putJson("/client/update/" + savedClient.getId(), testDTO2))
+                .andExpect(status().isOk())
+        .andExpect(clientCheck("$", testDTO2));
+
+        System.out.println(clientRepository.findById(savedClient.getId()).get().getId());
+        System.out.println(clientRepository.findById(savedClient.getId()).get().getName());
+        System.out.println(clientRepository.findById(savedClient.getId()).get().getInn());
+        System.out.println(clientRepository.findById(savedClient.getId()).get().getPhoneNumber());
     }
-
-    public static MockHttpServletRequestBuilder putJson(String uri, Object body) {
-        try {
-            String json = new ObjectMapper().writeValueAsString(body);
-            return put(uri)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .content(json);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 
     @Test
-    void getClients() {
+    void getClients() throws Exception {
+        Address testAddress1 = new Address("2", "3", "4",
+                "5", 7, 8, 9);
+        Order order1 = new Order(null, null, null, null);
+        List<Order> orders1 = new ArrayList<>();
+        orders1.add(order1);
+
+        Address testAddress2 = new Address("2", "3", "4",
+                "5", 7, 8, 9);
+        Order order2 = new Order(null, null, null, null);
+        List<Order> orders2 = new ArrayList<>();
+        orders2.add(order2);
+
+        Address testAddress3 = new Address("2", "3", "4",
+                "5", 7, 8, 9);
+        Order order3 = new Order(null, null, null, null);
+        List<Order> orders3 = new ArrayList<>();
+        orders3.add(order3);
+
+        Client testClient1 = new Client("Stan", "1231231",
+                "123123123", testAddress1, orders1);
+        Client savedClient1 = clientRepository.save(testClient1);
+        Client testClient2 = new Client("Kyle", "1231231",
+                "123123123", testAddress2, orders2);
+        Client savedClient2 = clientRepository.save(testClient2);
+        Client testClient3 = new Client("Erick", "1231231",
+                "123123123", testAddress3, orders3);
+        Client savedClient3 = clientRepository.save(testClient3);
+
+        mockMvc.perform(get("/client/getclients"))
+                .andExpect(status().isOk());
+//                .andExpect(clientCheck("$", clientConverter.entityToDTO(savedClient1)))
+//                .andExpect(clientCheck("$", clientConverter.entityToDTO(savedClient2)))
+//                .andExpect(clientCheck("$", clientConverter.entityToDTO(savedClient3)));
     }
 
     @Test
     void deleteClient() {
     }
 
-
+    public static MockHttpServletRequestBuilder putJson(String uri, Object body) {
+        try {
+            String json = new ObjectMapper().writeValueAsString(body);
+            return put(uri)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                    .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                    .content(json);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static MockHttpServletRequestBuilder postJson(String uri, Object body) {
         try {

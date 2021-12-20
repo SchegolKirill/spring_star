@@ -14,9 +14,6 @@ public class ClientConverter {
     @Autowired
     AddressConverter addressConverter;
 
-    @Autowired
-    OrderConverter orderConverter;
-
     public ClientDTO entityToDTO(Client client){
 
         ClientDTO dto = new ClientDTO();
@@ -24,7 +21,6 @@ public class ClientConverter {
         dto.setInn(client.getInn());
         dto.setPhoneNumber(client.getPhoneNumber());
         dto.setAddressDTO(addressConverter.entityToDTO(client.getAddress()));
-        dto.setOrdersDTO(orderConverter.entityToDTO(client.getOrders()));
 
         return dto;
     }
@@ -39,7 +35,6 @@ public class ClientConverter {
         client.setInn(dto.getInn());
         client.setPhoneNumber(dto.getPhoneNumber());
         client.setAddress(addressConverter.DTOToEntity(dto.getAddressDTO()));
-        client.setOrders(orderConverter.DTOToEntity(dto.getOrdersDTO()));
         return client;
     }
 

@@ -2,6 +2,7 @@ package com.schegol.sping.spring_star.dop_task.controllers;
 
 import com.schegol.sping.spring_star.dop_task.converters.ClientConverter;
 import com.schegol.sping.spring_star.dop_task.dto.ClientDTO;
+import com.schegol.sping.spring_star.dop_task.dto.ResponseDTO;
 import com.schegol.sping.spring_star.dop_task.entity.Client;
 import com.schegol.sping.spring_star.dop_task.services.ClientService;
 import lombok.RequiredArgsConstructor;
@@ -38,9 +39,8 @@ public class ClientController {
 //    }
 
     @PutMapping("/update/{id}")
-    public ClientDTO updateClient(@PathVariable("id") Integer id, @RequestBody ClientDTO dto){
-        clientService.updateClient(id, clientConverter.DTOToEntity(dto));
-        return clientConverter.entityToDTO(clientService.getClient(id));
+    public Client updateClient(@PathVariable("id") Integer id, @RequestBody ClientDTO dto){
+        return clientService.updateClient(id, dto);
     }
 
     @GetMapping("/getclients")

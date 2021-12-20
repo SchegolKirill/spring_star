@@ -3,6 +3,7 @@ package com.schegol.sping.spring_star.dop_task.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.schegol.sping.spring_star.dop_task.converters.ClientConverter;
+import com.schegol.sping.spring_star.dop_task.dto.AddressDTO;
 import com.schegol.sping.spring_star.dop_task.dto.ClientDTO;
 import com.schegol.sping.spring_star.dop_task.entity.Address;
 import com.schegol.sping.spring_star.dop_task.entity.Client;
@@ -15,12 +16,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -50,10 +54,10 @@ class ClientControllerTest {
 
     @Test
     void addNewClient() throws Exception {
-        Address address = new Address("2","3", "4",
+        Address address = new Address("2", "3", "4",
                 "5", 7, 8, 9);
 
-        Client client = new Client( "Kirill", "1231231",
+        Client client = new Client("Kirill", "1231231",
                 "123123123", address, null);
 
         mockMvc.perform(postJson("/client/addnewclient", client))
@@ -63,24 +67,8 @@ class ClientControllerTest {
     }
 
     @Test
-    void getClient() throws Exception{
+    void getClient() throws Exception {
 
-            Address testAddress1 = new Address("2", "3", "4",
-                    "5", 7, 8, 9);
-            Order order1 = new Order(null, null, null, null);
-            List<Order> orders1 = new ArrayList<>();
-            orders1.add(order1);
-
-            Client testClient1 = new Client("Stan", "1231231",
-                    "123123123", testAddress1, orders1);
-        Client savedClient1 = clientRepository.save(testClient1);
-        mockMvc.perform(get("/client/getclient/" + savedClient1.getId()))
-                .andExpect(status().isOk())
-                .andExpect(clientCheck("$", clientController.getClient(savedClient1.getId())));
-    }
-
-    @Test
-    void updateClient() throws Exception {
         Address testAddress1 = new Address("2", "3", "4",
                 "5", 7, 8, 9);
         Order order1 = new Order(null, null, null, null);
@@ -89,26 +77,36 @@ class ClientControllerTest {
 
         Client testClient1 = new Client("Stan", "1231231",
                 "123123123", testAddress1, orders1);
-
-        Client savedClient = clientRepository.save(testClient1);
-
-        Address testAddress2 = new Address("12", "13", "14",
-                "15", 17, 18, 19);
-        Order order2 = new Order(1, null, "burger", 100L);
-        List<Order> orders2 = new ArrayList<>();
-        orders2.add(order2);
-        Client testClient2 = new Client( "Alla", "1111",
-                "2222", testAddress2, orders2);
-        ClientDTO testDTO2 = clientConverter.entityToDTO(testClient2);
-
-        mockMvc.perform(putJson("/client/update/" + savedClient.getId(), testDTO2))
+        Client savedClient1 = clientRepository.save(testClient1);
+        mockMvc.perform(get("/client/getclient/" + savedClient1.getId()))
                 .andExpect(status().isOk())
-        .andExpect(clientCheck("$", testDTO2));
+                .andExpect(clientCheck("$", clientController.getClient(savedClient1.getId())));
+    }
 
-        System.out.println(clientRepository.findById(savedClient.getId()).get().getId());
-        System.out.println(clientRepository.findById(savedClient.getId()).get().getName());
-        System.out.println(clientRepository.findById(savedClient.getId()).get().getInn());
-        System.out.println(clientRepository.findById(savedClient.getId()).get().getPhoneNumber());
+    @Test
+    void successUpdateClient() throws Exception {
+        Address address = new Address("1", "2", "3",
+                "4", 17, 18, 19);
+        Order order = new Order(1, null, "burger", 100L);
+        List<Order> orders = new ArrayList<>();
+        orders.add(order);
+        Client currentClient = new Client("Alla", "1111",
+                "2222", address, orders);
+        Client savedClient = clientRepository.save(currentClient);
+
+        AddressDTO addressDTO = new AddressDTO("111", "222", "333", "444",
+                1700, 1800, 1900);
+        ClientDTO clientDTO = new ClientDTO("name", "inn", "7900123456", addressDTO);
+
+        mockMvc.perform(putJson("/client/update/" + savedClient.getId(), clientDTO))
+                .andExpect(status().isOk());
+
+        Optional<Client> checkClient = clientRepository.findById(savedClient.getId());
+        if (checkClient.isPresent()) {
+            assert checkClient.get().getInn().equals(clientDTO.getInn());
+            assert checkClient.get().getName().equals(clientDTO.getName());
+            assert checkClient.get().getPhoneNumber().equals(clientDTO.getPhoneNumber());
+        }
     }
 
     @Test

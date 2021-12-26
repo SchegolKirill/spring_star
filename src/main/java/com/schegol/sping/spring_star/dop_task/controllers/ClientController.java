@@ -2,9 +2,12 @@ package com.schegol.sping.spring_star.dop_task.controllers;
 
 import com.schegol.sping.spring_star.dop_task.converters.ClientConverter;
 import com.schegol.sping.spring_star.dop_task.dto.ClientDTO;
-import com.schegol.sping.spring_star.dop_task.dto.ResponseDTO;
+//import com.schegol.sping.spring_star.dop_task.dto.ResponseDTO;
 import com.schegol.sping.spring_star.dop_task.entity.Client;
+import com.schegol.sping.spring_star.dop_task.exception_handling.ClientException;
+import com.schegol.sping.spring_star.dop_task.exception_handling.ClientExceptionVariant;
 import com.schegol.sping.spring_star.dop_task.services.ClientService;
+import com.schegol.sping.spring_star.main_task.exception_handling.PersonException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -29,14 +32,9 @@ public class ClientController {
     @GetMapping("/getclient/{id}")
     @Transactional
     public ClientDTO getClient(@PathVariable("id") Integer id){
-        return clientConverter.entityToDTO(clientService.getClient(id));
+        ClientDTO clientDTO = clientConverter.entityToDTO(clientService.getClient(id));
+        return clientDTO;
     }
-
-//    @PutMapping("/update/{id}")
-//    public String updateClient(@PathVariable("id") Integer id, @RequestBody ClientDTO dto){
-//        clientService.updateClient(id, clientConverter.DTOToEntity(dto));
-//        return "Клиент " + id + " успешно обновлен";
-//    }
 
     @PutMapping("/update/{id}")
     public Client updateClient(@PathVariable("id") Integer id, @RequestBody ClientDTO dto){

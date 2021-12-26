@@ -1,0 +1,21 @@
+databaseChangeLog: #параметр в котором находятся миграции
+#  - includeAll:
+#      path: db/changelog/changeset/
+  - include: # список активных миграций
+      file: db/changelog/changeset/addresses.yaml # путь к файлу миграции
+  - include:
+      file: db/changelog/changeset/clients.yaml
+  - include:
+      file: db/changelog/changeset/orders.yaml
+  - include:
+      file: db/changelog/changeset/persons.yaml
+  - include:
+      file: db/changelog/changeset/updatepersons.yaml
+  - include:
+      file: db/changelog/changeset/passports.yaml
+  - include:
+      file: db/changelog/changeset/updatepersonspassports.yaml
+  - include:
+      file: db/changelog/changeset/departments.yaml
+  - include:
+      file: db/changelog/changeset/adddepartmentstopersons.yaml

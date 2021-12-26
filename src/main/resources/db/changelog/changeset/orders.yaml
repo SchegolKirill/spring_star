@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: orders
+      author: Kirill Schegol
+      changes:
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: id
+                  type: int unsigned
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: number
+                  type: int
+              - column:
+                  name: date_of_creation
+                  type: date
+              - column:
+                  name: description
+                  type: varchar(100)
+              - column:
+                  name: sum
+                  type: int
+              - column:
+                  name: client_id
+                  type: int unsigned
+                  constraints:
+                    foreignKeyName: client_fk
+                    referencedTableName: clients
+                    referencedColumnNames: id

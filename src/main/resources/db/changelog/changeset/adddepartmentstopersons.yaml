@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: adddepartmentstopersons
+      author: Kirill Schegol
+      changes:
+        - addColumn:
+            tableName: persons
+            columns:
+              - column:
+                  name: department_id
+                  type: int unsigned
+                  constraints:
+                    foreignKeyName: departments_fk
+                    referencedTableName: departments
+                    referencedColumnNames: id

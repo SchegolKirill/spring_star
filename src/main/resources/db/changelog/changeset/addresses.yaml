@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: addresses
+      author: Kirill Schegol
+      changes:
+        - createTable:
+            tableName: addresses
+            columns:
+              - column:
+                  name: id
+                  type: int unsigned
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: code_of_region
+                  type: varchar(100)
+              - column:
+                  name: name_of_district
+                  type: varchar(100)
+              - column:
+                  name: name_of_city
+                  type: varchar(100)
+              - column:
+                  name: street
+                  type: varchar(100)
+              - column:
+                  name: house
+                  type: int
+              - column:
+                  name: case_number
+                  type: int
+              - column:
+                  name: office
+                  type: int

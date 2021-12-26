@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: passports
+      author: Kirill Schegol
+      changes:
+        - createTable:
+            tableName: passports
+            columns:
+              - column:
+                  name: id
+                  type: int unsigned
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: series
+                  type: varchar(100)
+                  constraints:
+                    unique: true
+              - column:
+                  name: number
+                  type: varchar(100)
+                  constraints:
+                    unique: true
+              - column:
+                  name: date_of_issue
+                  type: date

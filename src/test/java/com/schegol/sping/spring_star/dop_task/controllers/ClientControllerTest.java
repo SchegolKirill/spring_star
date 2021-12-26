@@ -27,11 +27,8 @@ import java.util.Optional;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -147,7 +144,31 @@ class ClientControllerTest {
     }
 
     @Test
-    void deleteClient() {
+    void deleteClient() throws Exception {
+        Address testAddress1 = new Address("2", "3", "4",
+                "5", 7, 8, 9);
+        Order order1 = new Order(null, null, null, null);
+        List<Order> orders1 = new ArrayList<>();
+        orders1.add(order1);
+
+        Client testClient1 = new Client("Stan", "1231231",
+                "123123123", testAddress1, orders1);
+        Client savedClient1 = clientRepository.save(testClient1);
+
+        mockMvc.perform(deleteJson("/client/delete/" + savedClient1.getId(), savedClient1.getId()))
+                .andExpect(status().isOk());
+    }
+
+    public static MockHttpServletRequestBuilder deleteJson(String uri, Object body) {
+        try {
+            String json = new ObjectMapper().writeValueAsString(body);
+            return delete(uri)
+                    .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                    .accept(MediaType.APPLICATION_JSON_UTF8_VALUE)
+                    .content(json);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static MockHttpServletRequestBuilder putJson(String uri, Object body) {

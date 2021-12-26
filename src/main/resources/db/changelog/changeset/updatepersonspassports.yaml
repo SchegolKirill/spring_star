@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: updatepersonspassports
+      author: Kirill Schegol
+      changes:
+        - modifyDataType:
+            catalogName: passport
+            columnName: id
+            newDataType: int unsigned
+            schemaName:  public
+            tableName: persons
+            constraints:
+              foreignKeyName: passport_fk
+              referencedTableName: passports
+              referencedColumnNames: id

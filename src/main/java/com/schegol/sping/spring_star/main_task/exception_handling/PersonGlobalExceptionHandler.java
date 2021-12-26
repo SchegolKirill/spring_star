@@ -12,7 +12,7 @@ public class PersonGlobalExceptionHandler {
     public ResponseEntity<PersonIncorrectData> handleException(PersonException exception){
         PersonIncorrectData data = new PersonIncorrectData();
         data.setInfo(exception.getMessage());
-        return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<> (data, HttpStatus.NOT_FOUND);
     }
 
 //    @ExceptionHandler
